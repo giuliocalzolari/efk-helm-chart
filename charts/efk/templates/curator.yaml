@@ -1,0 +1,110 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-curator-config
+  labels:
+    app.kubernetes.io/name: curator
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/version: {{ .Chart.Version }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+data:
+  action_file.yml:   |-
+    ---
+    actions:
+      1:
+        action: delete_indices
+        description: "Clean up ES by deleting old indices"
+        options:
+          timeout_override:
+          continue_if_exception: False
+          disable_action: False
+          ignore_empty_list: True
+        filters:
+        - filtertype: age
+          source: name
+          direction: older
+          timestring: "{{ .Values.curator.timestring }}"
+          unit: {{ .Values.curator.unit }}
+          unit_count: {{ .Values.curator.unit_count }}
+          field:
+          stats_result:
+          epoch:
+          exclude: False
+  config.yml:   |-
+    ---
+    client:
+      hosts:
+        - ${ELASTIC_HOST}
+      port: 9200
+      username: ${ELASTIC_USERNAME}
+      password: ${ELASTIC_PASSWORD}
+      timeout: 30
+      master_only: False
+      use_ssl: True
+      certificate: /etc/es-curator/certs/ca.crt
+      ssl_no_validate: True
+
+    logging:
+      loglevel: DEBUG
+      logfile:
+      logformat: json
+      blacklist: [] #['elasticsearch', 'urllib3']
+
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ .Release.Name }}-elasticsearch-curator
+  labels:
+    app: elasticsearch-curator
+    release: {{ .Release.Name }}
+    app.kubernetes.io/name: curator
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/version: {{ .Chart.Version }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  schedule: {{ .Values.curator.schedule }}
+  jobTemplate:
+    metadata:
+      labels:
+        app: elasticsearch-curator
+        release: {{ .Release.Name }}
+    spec:
+      template:
+        metadata:
+          labels:
+            app: elasticsearch-curator
+            release: {{ .Release.Name }}
+        spec:
+          volumes:
+            - name: config-volume
+              configMap:
+                name: {{ .Release.Name }}-curator-config
+            - name: elasticsearch-tls
+              secret:
+                secretName: elasticsearch-tls
+          restartPolicy: Never
+          containers:
+            - name: elasticsearch-curator
+              image: {{ .Values.curator.image }}
+              imagePullPolicy: IfNotPresent
+              volumeMounts:
+                - name: config-volume
+                  mountPath: /etc/es-curator
+                - name: elasticsearch-tls
+                  mountPath: /etc/es-curator/certs
+                  readOnly: true
+              command:
+                - curator
+              args: [ "--config", "/etc/es-curator/config.yml", "/etc/es-curator/action_file.yml" ]
+              env:
+                - name: ELASTIC_HOST
+                  value: {{ printf "logs-elasticsearch.%s.svc.cluster.local" .Release.Namespace }}
+                - name: ELASTIC_USERNAME
+                  value: "elastic"
+                - name: ELASTIC_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: kibana-password
+                      key: password
+

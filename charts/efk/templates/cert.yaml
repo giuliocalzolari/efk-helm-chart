@@ -1,0 +1,37 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name:  {{ .Values.kibana.ingress.tls.secret }}
+  labels:
+    app.kubernetes.io/name: kibana
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/version: {{ .Chart.Version }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  secretName: {{ .Values.kibana.ingress.tls.secret }}
+  dnsNames:
+  - {{ .Values.kibana.ingress.host }}
+  issuerRef:
+    name: {{ .Values.kibana.ingress.tls.issuer }}
+    kind: ClusterIssuer
+    group: cert-manager.io
+
+---
+{{- $altNames := list "logs-elasticsearch" (printf "logs-elasticsearch.%s" .Release.Namespace) (printf "logs-elasticsearch.%s.svc" .Release.Namespace) (printf "logs-elasticsearch.%s.svc.cluster.local" .Release.Namespace) -}}
+{{- $ca := genCA "elasticsearch-ca" 3650 -}}
+{{- $cert := genSignedCert "logs-elasticsearch" nil $altNames 365 $ca -}}
+apiVersion: v1
+kind: Secret
+type: kubernetes.io/tls
+metadata:
+  name: elasticsearch-tls
+  labels:
+    app.kubernetes.io/name: elasticsearch
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/version: {{ .Chart.Version }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+data:
+  tls.crt: {{ $cert.Cert | toString | b64enc }}
+  tls.key: {{ $cert.Key | toString | b64enc }}
+  ca.crt: {{ $ca.Cert | toString | b64enc }}

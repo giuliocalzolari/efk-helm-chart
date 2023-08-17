@@ -1,0 +1,176 @@
+{{ $seed_hosts := list }}
+{{ $hosts := list }}
+{{ range $i := until (.Values.elasticsearch.replicas | int) }}
+{{ $seed_hosts = append $seed_hosts (printf "es-cluster-%d.%s" $i $.Release.Namespace) }}
+{{ $hosts = append $hosts (printf "es-cluster-%d" $i) }}
+{{ end }}
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: es-cluster
+  labels:
+    app: elasticsearch
+    app.kubernetes.io/name: elasticsearch
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/version: {{ .Chart.Version }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  serviceName: logs-elasticsearch
+  replicas: {{ .Values.elasticsearch.replicas }}
+  selector:
+    matchLabels:
+      app: elasticsearch
+  template:
+    metadata:
+      labels:
+        app: elasticsearch
+        app.kubernetes.io/name: elasticsearch
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/version: {{ .Chart.Version }}
+        app.kubernetes.io/managed-by: {{ .Release.Service }}
+    spec:
+      securityContext:
+        runAsUser: 1000
+        fsGroup: 1000
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 90
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app.kubernetes.io/name
+                  operator: In
+                  values:
+                  - elasticsearch
+              topologyKey: topology.kubernetes.io/zone
+          - weight: 10
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app.kubernetes.io/name
+                  operator: In
+                  values:
+                  - elasticsearch
+              topologyKey: kubernetes.io/hostname
+      containers:
+      - name: elasticsearch
+        image: {{ .Values.elasticsearch.image }}
+        resources:
+            limits:
+              cpu: 1000m
+            requests:
+              cpu: 500m
+        ports:
+        - containerPort: 9200
+          name: rest
+          protocol: TCP
+        - containerPort: 9300
+          name: inter-node
+          protocol: TCP
+        volumeMounts:
+        - name: data-logging
+          mountPath: /usr/share/elasticsearch/data
+        - name: elasticsearch-tls
+          mountPath: /usr/share/elasticsearch/config/certs
+          readOnly: true
+        env:
+          - name: cluster.name
+            value: k8s-logs
+          - name: node.name
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: discovery.seed_hosts
+            value: {{ join "," $seed_hosts }}
+          - name: cluster.initial_master_nodes
+            value: {{ join "," $hosts }}
+          - name: ES_JAVA_OPTS
+            value: {{ .Values.elasticsearch.es_java_opt }}
+          - name: xpack.security.enabled
+            value: "true"
+          - name: xpack.security.transport.ssl.enabled
+            value: "true"
+          - name: xpack.security.http.ssl.enabled
+            value: "true"
+          - name: xpack.security.transport.ssl.verification_mode
+            value: "certificate"
+          - name: xpack.security.transport.ssl.key
+            value: "/usr/share/elasticsearch/config/certs/tls.key"
+          - name: xpack.security.transport.ssl.certificate
+            value: "/usr/share/elasticsearch/config/certs/tls.crt"
+          - name: xpack.security.transport.ssl.certificate_authorities
+            value: "/usr/share/elasticsearch/config/certs/ca.crt"
+          - name: xpack.security.http.ssl.key
+            value: "/usr/share/elasticsearch/config/certs/tls.key"
+          - name: xpack.security.http.ssl.certificate
+            value: "/usr/share/elasticsearch/config/certs/tls.crt"
+          - name: xpack.security.http.ssl.certificate_authorities
+            value: "/usr/share/elasticsearch/config/certs/ca.crt"
+          - name: xpack.monitoring.collection.enabled
+            value: "true"
+          - name: ELASTIC_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: kibana-password
+                key: password
+      initContainers:
+      # - name: fix-permissions
+      #   image: busybox
+      #   command: ["sh", "-c", "chown -R 1000:1000 /usr/share/elasticsearch/data"]
+      #   securityContext:
+      #     privileged: true
+      #   volumeMounts:
+      #   - name: data-logging
+      #     mountPath: /usr/share/elasticsearch/data
+      - name: increase-vm-max-map
+        image: busybox
+        command: ["sysctl", "-w", "vm.max_map_count=262144"]
+        securityContext:
+          privileged: true
+          runAsUser: 0
+
+      - name: increase-fd-ulimit
+        image: busybox
+        command: ["sh", "-c", "ulimit -n 65536"]
+        securityContext:
+          privileged: true
+      volumes:
+        - name: elasticsearch-tls
+          secret:
+            secretName: elasticsearch-tls
+  volumeClaimTemplates:
+  - metadata:
+      name: data-logging
+      labels:
+        app: elasticsearch
+    spec:
+        accessModes: [ "ReadWriteOnce" ]
+        {{- with .Values.elasticsearch.persistence.storageClassName }}
+        storageClassName: {{ . | quote }}
+        {{- end }}
+        resources:
+            requests:
+                storage: {{ .Values.elasticsearch.persistence.storageSize }}
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: logs-elasticsearch
+  labels:
+    app: elasticsearch
+    app.kubernetes.io/name: elasticsearch
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/version: {{ .Chart.Version }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  selector:
+    app: elasticsearch
+  clusterIP: None
+  ports:
+    - port: 9200
+      name: rest
+    - port: 9300
+      name: inter-node

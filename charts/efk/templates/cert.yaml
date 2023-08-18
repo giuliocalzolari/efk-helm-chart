@@ -17,10 +17,11 @@ spec:
     kind: ClusterIssuer
     group: cert-manager.io
 
----
+
 {{- $altNames := list "logs-elasticsearch" (printf "logs-elasticsearch.%s" .Release.Namespace) (printf "logs-elasticsearch.%s.svc" .Release.Namespace) (printf "logs-elasticsearch.%s.svc.cluster.local" .Release.Namespace) -}}
 {{- $ca := genCA "elasticsearch-ca" 3650 -}}
 {{- $cert := genSignedCert "logs-elasticsearch" nil $altNames 365 $ca -}}
+---
 apiVersion: v1
 kind: Secret
 type: kubernetes.io/tls

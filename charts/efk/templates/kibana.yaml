@@ -35,8 +35,7 @@ spec:
                 #!/bin/bash
                 # Apply default Index Pattern into Kibana
                 KIBANA_URL=http://localhost:5601
-                while [[ "$(curl -s -o /dev/null -w '%{http_code}\n' $KIBANA_URL/app/kibana)" != "302" ]]; do sleep 1; done
-                curl -u $ELASTICSEARCH_USERNAME:$ELASTICSEARCH_PASSWORD -X POST "$KIBANA_URL/api/saved_objects/index-pattern/logstash" -H 'kbn-xsrf: true' -H 'Content-Type: application/json' -d'
+                curl --retry 15 --retry-delay 5 -u $ELASTICSEARCH_USERNAME:$ELASTICSEARCH_PASSWORD -X POST "$KIBANA_URL/api/saved_objects/index-pattern/logstash" -H 'kbn-xsrf: true' -H 'Content-Type: application/json' -d'
                 {
                   "attributes": {
                     "title": "logstash-*",

@@ -10,6 +10,7 @@ kibana:
   replicas: 1
   image: docker.elastic.co/kibana/kibana:7.5.0
   password: elastic
+  init_index_pattern: false
   ingress:
     ingressClassName: nginx
     host: kibana.example.com

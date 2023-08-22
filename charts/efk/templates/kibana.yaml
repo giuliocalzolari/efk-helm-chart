@@ -25,6 +25,7 @@ spec:
       containers:
       - name: kibana
         image: {{ .Values.kibana.image }}
+        {{- if .Values.kibana._init_index_pattern }}
         lifecycle:
           postStart:
             exec:
@@ -43,6 +44,7 @@ spec:
                   }
                 }
                 '
+        {{- end }}
         resources:
           limits:
             cpu: 1

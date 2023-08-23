@@ -23,7 +23,7 @@ fluentd:
 
 curator:
   schedule: "0 1 * * *"
-  image: "bitnami/elasticsearch-curator:5.8.4-debian-10-r253"
+  image: "public.ecr.aws/bitnami/elasticsearch-curator:5.8.4-debian-11-r11"
   unit_count: 15
   unit: days
   timestring: '%Y.%m.%d'

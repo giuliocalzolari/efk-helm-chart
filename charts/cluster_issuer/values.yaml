@@ -1,0 +1,10 @@
+name: acme
+email:
+server:
+hostedZoneName:
+clientID:
+clientSecret:
+tenantID:
+subscriptionID:
+resourceGroupName:
+project:

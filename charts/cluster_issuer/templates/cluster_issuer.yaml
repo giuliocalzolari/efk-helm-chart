@@ -1,0 +1,45 @@
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: {{ .Values.name }}
+spec:
+  acme:
+    email: {{ .Values.email }}
+    server: {{ .Values.server }}
+    privateKeySecretRef:
+      name: {{ .Values.name }}
+    solvers:
+      - dns01:
+          {{ if .Values.project }}
+          cloudDNS:
+            project: {{ .Values.project }}
+          {{ end }}
+          {{ if .Values.resourceGroupName }}
+          azureDNS:
+            environment: "AzurePublicCloud"
+            hostedZoneName: {{ .Values.hostedZoneName }}
+            {{ if .Values.clientSecret }}
+            tenantID: {{ .Values.tenantID }}
+            clientID: {{ .Values.clientID }}
+            clientSecretSecretRef:
+              name:  {{ .Values.name }}-secret
+              key: client-secret
+            {{ else }}
+            managedIdentity:
+              clientID: {{ .Values.clientID }}
+            {{ end }}
+
+            resourceGroupName: {{ .Values.resourceGroupName }}
+            subscriptionID: {{ .Values.subscriptionID }}
+          {{ end }}
+
+---
+{{ if .Values.clientSecret }}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ .Values.name }}-secret
+data:
+  client-secret: {{ .Values.clientSecret | b64enc }}
+{{ end }}

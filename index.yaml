@@ -12,6 +12,15 @@ entries:
     version: 0.0.1
   efk:
   - apiVersion: v2
+    created: "2023-09-11T11:24:18.235950506Z"
+    digest: e4d96fc073071f07646614c5cc3259f1521a842fb14f8c4bcd2f63ec1f8937c1
+    maintainers:
+    - name: giuliocalzolari
+    name: efk
+    urls:
+    - https://github.com/giuliocalzolari/helm-charts/releases/download/efk-0.0.14/efk-0.0.14.tgz
+    version: 0.0.14
+  - apiVersion: v2
     created: "2023-08-23T07:17:47.630970999Z"
     digest: a02aac265242dcf5641ceb0ec2f08c0c439411e57803872b43ffbef01f88bd24
     maintainers:
@@ -52,4 +61,4 @@ entries:
     urls:
     - https://github.com/giuliocalzolari/efk-helm-chart/releases/download/efk-0.0.1/efk-0.0.1.tgz
     version: 0.0.1
-generated: "2023-09-11T10:15:25.670004522Z"
+generated: "2023-09-11T11:24:18.236064708Z"

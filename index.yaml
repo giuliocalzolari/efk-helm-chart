@@ -1,5 +1,15 @@
 apiVersion: v1
 entries:
+  cluster_issuer:
+  - apiVersion: v2
+    created: "2023-09-11T10:15:25.669992522Z"
+    digest: 9f1a7f902c68d58f3d5240b80fabf5e5cd206eb6b8d582201d05e5c9f4ff71ae
+    maintainers:
+    - name: giuliocalzolari
+    name: cluster_issuer
+    urls:
+    - https://github.com/giuliocalzolari/helm-charts/releases/download/cluster_issuer-0.0.1/cluster_issuer-0.0.1.tgz
+    version: 0.0.1
   efk:
   - apiVersion: v2
     created: "2023-08-23T07:17:47.630970999Z"
@@ -42,4 +52,4 @@ entries:
     urls:
     - https://github.com/giuliocalzolari/efk-helm-chart/releases/download/efk-0.0.1/efk-0.0.1.tgz
     version: 0.0.1
-generated: "2023-08-23T07:17:47.630989497Z"
+generated: "2023-09-11T10:15:25.670004522Z"

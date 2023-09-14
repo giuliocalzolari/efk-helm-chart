@@ -64,6 +64,7 @@ spec:
               "/var/log/containers/netd-*",
               "/var/log/containers/pdcsi-node-*",
               "/var/log/containers/csi-azuredisk-node-*",
+              "/var/log/containers/cloud-node-manager-*",
               "/var/log/kube-proxy.log"
               ]
             

@@ -79,4 +79,24 @@ entries:
     urls:
     - https://github.com/giuliocalzolari/efk-helm-chart/releases/download/efk-0.0.1/efk-0.0.1.tgz
     version: 0.0.1
-generated: "2023-09-14T08:54:07.728649305Z"
+  kube-downscaler:
+  - apiVersion: v1
+    appVersion: 23.2.0
+    created: "2023-09-15T07:12:14.32207082Z"
+    description: Scale down Kubernetes deployments after work hours
+    digest: 5837f5b8998ad312760545d29cd53e990b23a57276c5c398d04e8554b6ee168a
+    home: https://codeberg.org/hjacobs/kube-downscaler
+    keywords:
+    - k8s pods scheduler
+    - scheduled lifecycle
+    maintainers:
+    - name: hjacobs
+      url: https://codeberg.org/hjacobs
+    name: kube-downscaler
+    sources:
+    - https://github.com/giuliocalzolari/helm-charts
+    - https://codeberg.org/hjacobs/kube-downscaler
+    urls:
+    - https://github.com/giuliocalzolari/helm-charts/releases/download/kube-downscaler-0.7.2/kube-downscaler-0.7.2.tgz
+    version: 0.7.2
+generated: "2023-09-15T07:12:14.322629024Z"

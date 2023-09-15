@@ -8,7 +8,7 @@ Scale down Kubernetes deployments after work hours
 
 ## How to install this chart
 
-Add public chart repo:
+Add my public chart repo:
 
 ```console
 helm repo add giuliocalzolari https://giuliocalzolari.github.io/helm-charts

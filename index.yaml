@@ -2,6 +2,15 @@ apiVersion: v1
 entries:
   cluster_issuer:
   - apiVersion: v2
+    created: "2023-09-15T07:41:23.10435691Z"
+    digest: 6f354b79fdcbcdc867de491c4e17fdf13c8bb6823bdcb7115fff1d347692b359
+    maintainers:
+    - name: giuliocalzolari
+    name: cluster_issuer
+    urls:
+    - https://github.com/giuliocalzolari/helm-charts/releases/download/cluster_issuer-0.0.2/cluster_issuer-0.0.2.tgz
+    version: 0.0.2
+  - apiVersion: v2
     created: "2023-09-11T10:15:25.669992522Z"
     digest: 9f1a7f902c68d58f3d5240b80fabf5e5cd206eb6b8d582201d05e5c9f4ff71ae
     maintainers:
@@ -11,6 +20,15 @@ entries:
     - https://github.com/giuliocalzolari/helm-charts/releases/download/cluster_issuer-0.0.1/cluster_issuer-0.0.1.tgz
     version: 0.0.1
   efk:
+  - apiVersion: v2
+    created: "2023-09-15T07:41:23.21132668Z"
+    digest: 92a14f0017a91852ef6ccad5680625ce98bfbbf77805c955d96a28040a09cc05
+    maintainers:
+    - name: giuliocalzolari
+    name: efk
+    urls:
+    - https://github.com/giuliocalzolari/helm-charts/releases/download/efk-0.0.17/efk-0.0.17.tgz
+    version: 0.0.17
   - apiVersion: v2
     created: "2023-09-14T08:54:07.728622805Z"
     digest: 8a5169b19d6624a5f46778736ebda4959780bbc64b32d81d25830dbe8236e058
@@ -82,6 +100,25 @@ entries:
   kube-downscaler:
   - apiVersion: v1
     appVersion: 23.2.0
+    created: "2023-09-15T07:41:23.352079947Z"
+    description: Scale down Kubernetes deployments after work hours
+    digest: a7148259a478d05d13eb7561707e7e2b0d1f889934ebeb1a86016c594482a35c
+    home: https://codeberg.org/hjacobs/kube-downscaler
+    keywords:
+    - k8s pods scheduler
+    - scheduled lifecycle
+    maintainers:
+    - name: hjacobs
+      url: https://codeberg.org/hjacobs
+    name: kube-downscaler
+    sources:
+    - https://github.com/giuliocalzolari/helm-charts
+    - https://codeberg.org/hjacobs/kube-downscaler
+    urls:
+    - https://github.com/giuliocalzolari/helm-charts/releases/download/kube-downscaler-0.7.3/kube-downscaler-0.7.3.tgz
+    version: 0.7.3
+  - apiVersion: v1
+    appVersion: 23.2.0
     created: "2023-09-15T07:12:14.32207082Z"
     description: Scale down Kubernetes deployments after work hours
     digest: 5837f5b8998ad312760545d29cd53e990b23a57276c5c398d04e8554b6ee168a
@@ -99,4 +136,4 @@ entries:
     urls:
     - https://github.com/giuliocalzolari/helm-charts/releases/download/kube-downscaler-0.7.2/kube-downscaler-0.7.2.tgz
     version: 0.7.2
-generated: "2023-09-15T07:12:14.322629024Z"
+generated: "2023-09-15T07:41:23.352118057Z"

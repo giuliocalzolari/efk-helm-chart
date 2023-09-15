@@ -3,20 +3,19 @@ kind: Deployment
 metadata:
   name: kibana
   labels:
-    app: kibana
     app.kubernetes.io/name: kibana
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/version: {{ .Chart.Version }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    {{- include "kube-downscaler.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.kibana.replicas }}
   selector:
     matchLabels:
-      app: kibana
+      app.kubernetes.io/name: kibana
+      app.kubernetes.io/instance: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app: kibana
+        app.kubernetes.io/name: kibana
+        app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
       volumes:
         - name: elasticsearch-tls
@@ -77,12 +76,11 @@ metadata:
   name: kibana
   labels:
     app.kubernetes.io/name: kibana
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/version: {{ .Chart.Version }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    {{- include "kube-downscaler.labels" . | nindent 4 }}
 spec:
   selector:
-    app: kibana
+    app.kubernetes.io/name: kibana
+    app.kubernetes.io/instance: {{ .Release.Name }}
   type: ClusterIP
   ports:
     - port: 5601

@@ -76,7 +76,7 @@ metadata:
   name: kibana
   labels:
     app.kubernetes.io/name: kibana
-    {{- include "kube-downscaler.labels" . | nindent 4 }}
+    {{- include "efk.labels" . | nindent 4 }}
 spec:
   selector:
     app.kubernetes.io/name: kibana

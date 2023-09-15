@@ -15,6 +15,7 @@ kibana:
     ingressClassName: nginx
     host: kibana.example.com
     tls:
+      secret: kibana-tls
       issuer: letsencrypt-prod
 
 fluentd:

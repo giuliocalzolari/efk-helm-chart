@@ -10,21 +10,18 @@ kind: StatefulSet
 metadata:
   name: es-cluster
   labels:
-    app: elasticsearch
     app.kubernetes.io/name: elasticsearch
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/version: {{ .Chart.Version }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    {{- include "efk.labels" . | nindent 4 }}
 spec:
   serviceName: logs-elasticsearch
   replicas: {{ .Values.elasticsearch.replicas }}
   selector:
     matchLabels:
-      app: elasticsearch
+      app.kubernetes.io/name: elasticsearch
+      app.kubernetes.io/instance: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app: elasticsearch
         app.kubernetes.io/name: elasticsearch
         app.kubernetes.io/instance: {{ .Release.Name }}
         app.kubernetes.io/version: {{ .Chart.Version }}
@@ -160,14 +157,12 @@ apiVersion: v1
 metadata:
   name: logs-elasticsearch
   labels:
-    app: elasticsearch
     app.kubernetes.io/name: elasticsearch
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/version: {{ .Chart.Version }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    {{- include "efk.labels" . | nindent 4 }}
 spec:
   selector:
-    app: elasticsearch
+    app.kubernetes.io/name: elasticsearch
+    app.kubernetes.io/instance: {{ .Release.Name }}
   clusterIP: None
   ports:
     - port: 9200

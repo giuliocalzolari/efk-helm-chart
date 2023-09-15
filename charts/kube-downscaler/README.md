@@ -1,6 +1,6 @@
 # kube-downscaler
 
-![Version: 0.7.2](https://img.shields.io/badge/Version-0.7.2-informational?style=flat-square) ![AppVersion: 23.2.0](https://img.shields.io/badge/AppVersion-23.2.0-informational?style=flat-square)
+![Version: 0.7.3](https://img.shields.io/badge/Version-0.7.3-informational?style=flat-square) ![AppVersion: 23.2.0](https://img.shields.io/badge/AppVersion-23.2.0-informational?style=flat-square)
 
 Scale down Kubernetes deployments after work hours
 
@@ -8,7 +8,7 @@ Scale down Kubernetes deployments after work hours
 
 ## How to install this chart
 
-Add public chart repo:
+Add my public chart repo:
 
 ```console
 helm repo add giuliocalzolari https://giuliocalzolari.github.io/helm-charts

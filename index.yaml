@@ -97,6 +97,16 @@ entries:
     urls:
     - https://github.com/giuliocalzolari/efk-helm-chart/releases/download/efk-0.0.1/efk-0.0.1.tgz
     version: 0.0.1
+  generic:
+  - apiVersion: v2
+    created: "2023-09-20T07:29:39.35469255Z"
+    digest: cdd0a155dd72c3673e7028adde56c477972c54b0a2893c1344c39f8ca40409ec
+    maintainers:
+    - name: giuliocalzolari
+    name: generic
+    urls:
+    - https://github.com/giuliocalzolari/helm-charts/releases/download/generic-0.0.1/generic-0.0.1.tgz
+    version: 0.0.1
   kube-downscaler:
   - apiVersion: v1
     appVersion: 23.2.0
@@ -136,4 +146,4 @@ entries:
     urls:
     - https://github.com/giuliocalzolari/helm-charts/releases/download/kube-downscaler-0.7.2/kube-downscaler-0.7.2.tgz
     version: 0.7.2
-generated: "2023-09-15T07:41:23.352118057Z"
+generated: "2023-09-20T07:29:39.35471675Z"

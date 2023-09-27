@@ -117,6 +117,16 @@ entries:
     urls:
     - https://github.com/giuliocalzolari/helm-charts/releases/download/harness_delegate-0.0.1/harness_delegate-0.0.1.tgz
     version: 0.0.1
+  harness_role:
+  - apiVersion: v2
+    created: "2023-09-27T12:07:57.341463256Z"
+    digest: 7103dcde4e931f0178a7405339c3143bb8db793c48ed8b61273f483b479be763
+    maintainers:
+    - name: giuliocalzolari
+    name: harness_role
+    urls:
+    - https://github.com/giuliocalzolari/helm-charts/releases/download/harness_role-0.0.1/harness_role-0.0.1.tgz
+    version: 0.0.1
   kube-downscaler:
   - apiVersion: v1
     appVersion: 23.2.0
@@ -156,4 +166,4 @@ entries:
     urls:
     - https://github.com/giuliocalzolari/helm-charts/releases/download/kube-downscaler-0.7.2/kube-downscaler-0.7.2.tgz
     version: 0.7.2
-generated: "2023-09-27T08:20:40.013689993Z"
+generated: "2023-09-27T12:07:57.341487357Z"

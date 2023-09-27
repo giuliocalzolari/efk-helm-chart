@@ -1,2 +1,2 @@
-name: harness-delegate
+name: harness
 cluster_role: cluster-admin

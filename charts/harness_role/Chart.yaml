@@ -1,5 +1,5 @@
 apiVersion: v2
-name: harness_delegate
+name: harness_role
 version: 0.0.1
 maintainers:
 - name: giuliocalzolari

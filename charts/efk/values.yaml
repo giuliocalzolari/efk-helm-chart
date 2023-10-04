@@ -14,6 +14,7 @@ kibana:
   ingress:
     ingressClassName: nginx
     host: kibana.example.com
+    annotations: {}
     tls:
       secret: kibana-tls
       issuer: letsencrypt-prod

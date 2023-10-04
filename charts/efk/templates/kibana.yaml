@@ -99,6 +99,9 @@ metadata:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
   annotations:
     cert-manager.io/cluster-issuer: {{ .Values.kibana.ingress.tls.issuer }}
+    {{- with .Values.kibana.ingress.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 spec:
   ingressClassName: {{ .Values.kibana.ingress.ingressClassName }}
   tls:

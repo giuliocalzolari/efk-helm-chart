@@ -1,6 +1,6 @@
 # efk
 
-![Version: 0.0.17](https://img.shields.io/badge/Version-0.0.17-informational?style=flat-square)
+![Version: 0.0.18](https://img.shields.io/badge/Version-0.0.18-informational?style=flat-square)
 
 ## How to install this chart
 
@@ -50,6 +50,7 @@ helm install my-release giuliocalzolari/efk -f values.yaml
 | elasticsearch.replicas | int | `1` |  |
 | fluentd.image | string | `"fluent/fluentd-kubernetes-daemonset:v1.15-debian-elasticsearch7-1"` |  |
 | kibana.image | string | `"docker.elastic.co/kibana/kibana:7.5.0"` |  |
+| kibana.ingress.annotations | object | `{}` |  |
 | kibana.ingress.host | string | `"kibana.example.com"` |  |
 | kibana.ingress.ingressClassName | string | `"nginx"` |  |
 | kibana.ingress.tls.issuer | string | `"letsencrypt-prod"` |  |
